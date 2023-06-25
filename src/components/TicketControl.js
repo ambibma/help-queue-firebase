@@ -5,7 +5,7 @@ import EditTicketForm from './EditTicketForm';
 import TicketDetail from './TicketDetail';
 // new import!
 import {collection , addDoc, onSnapshot, doc, updateDoc, deleteDoc} from "firebase/firestore";
-import db from './../firebase.js';
+import { db, auth} from './../firebase.js';
 
 function TicketControl (){
     const [formVisibleOnPage, setFormVisibleOnPage] = useState(false)
@@ -87,9 +87,16 @@ function TicketControl (){
     setSelectedTicket(selection);
   }
 
-  
-    let currentlyVisibleState = null;
-    let buttonText = null; 
+    if(auth.currentUser ===null) {
+      return (
+       <>
+        <h1>YOU GOTTA SIGN IN!!!</h1> 
+       </>      
+      )
+    }else if( auth.currentUser !=null){
+      let currentlyVisibleState = null;
+      let buttonText = null; 
+    
     if (error) {
       currentlyVisibleState = <p>IT BROKED {error}</p>
     }
@@ -127,6 +134,7 @@ function TicketControl (){
       </React.Fragment>
     );
   }
+}
 
 
 
